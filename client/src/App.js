@@ -1,24 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import Home from "./pages/home";
+import Events from "./pages/events";
+import Profile from "./pages/profile";
 
 const App = () => {
-  const [todos, setTodos] = useState([]);
-  useEffect(() => {
-    // Fetch data from the Express server
-    axios.get('http://localhost:5000/todos')
-      .then(response => {
-        console.log(response)
-        setTodos(response.data)
-      })
-      .catch(error => console.error(error));
-  }, []);
   return (
-    <div>
-      <h1>MERN Stack Todo App</h1>
-      <ul>
-        {todos}
-      </ul>
-    </div>
-  );
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<Home/>} />
+        <Route path="/events" element={<Events/>} />
+        <Route path="/profile" element={<Profile/>} />
+      </Routes>
+    </Router>
+  )
 };
 export default App;
