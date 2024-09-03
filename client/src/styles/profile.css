@@ -1,0 +1,43 @@
+
+/* Custom container style to apply background color to the full viewport */
+.bg-light-grey {
+    background-color: #d3d3d3!important; /* Light grey background for the container */
+}    
+
+.btn-custom {
+background-color: #d3d3d3 !important;
+color: black !important;
+border: none !important;
+border-radius: 5px !important;
+padding: 4px 20px !important; /* Decrease vertical padding and increase horizontal padding */
+width: 70% !important; /* Increase button width to 70% of the container */
+height: 35px !important; /* Set a specific height */
+transition: background-color 0.3s ease, transform 0.3s ease !important;
+}
+
+.btn-custom:hover {
+background-color: white !important;
+transform: scale(1.05) !important;
+}
+  
+  
+/* Custom light grey text color */
+.text-light-grey {
+color: #d3d3d3 !important; 
+}
+
+.bg-dark-grey {
+    background-color: rgb(41, 51, 61) !important; 
+}
+    
+
+.card {
+border-radius: 15px;
+border: none;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+overflow: hidden;
+background-color: #f8f9fa; /* Light background for contrast with shadow */
+}
+
+
