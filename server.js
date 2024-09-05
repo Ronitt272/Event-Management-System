@@ -24,13 +24,23 @@ const todoSchema = new mongoose.Schema({
 
 const Todo = mongoose.model('Todo', todoSchema);
 
+const { spawn } = require('child_process');
+
 app.post('/events', async (req, res) => {
+	req.body["members"] = []
     const newEvent = new Event(req.body);
     await newEvent.save();
     res.json(newEvent);
+});
+app.patch('/events', async (req, res) => {
+	let event = await Event.findById(req.body._id)
+	event.set({'members': req.body.members})
+	await event.save()
 });
 
 app.get('/events', async (req, res) => {
     const events = await Event.find();
     res.json(events);
 });
+
+

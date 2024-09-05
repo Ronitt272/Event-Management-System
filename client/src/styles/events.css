@@ -1,0 +1,28 @@
+.events-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 20px;
+	grid-template-rows: auto 1fr;
+	grid-row-gap: calc((100vw - 1rem*2 - 90vw)/4);
+}
+.event-grid-event  {
+	width: 30vw;
+	height: 20vw;
+	transition: .1s;
+}
+.event-grid-event:hover {
+	transform: scale(1.05);
+}
+.event-grid-event:active {
+	transform: scale(.95);
+}
+.event-privacy {
+	font-size: 1rem;
+	margin-left: 1rem;
+}
+.modal:not(.show) {
+	pointer-events: none;
+}
+.modal:not(.show) * {
+	pointer-events: none;
+}

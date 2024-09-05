@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/profile.css'; 
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import { set } from 'mongoose';
+import axios from 'axios';
 
 
 
-const Profile = () => {
+const Profile = ({currentUser}) => {
     const [name, setName] = useState('John Doe');
     const [bio, setBio] = useState('a passionate event planner')
     const [isEditing, setIsEditing] = useState(false);
+    const [events, setEvents] = useState([]);
+
+    function fetchEvents() {
+      axios({
+              url: "http://localhost:5001/events",
+              method: "GET",
+          })
+              .then((res) => {
+                setEvents(res.data);
+              })
+    }
+
+    useEffect(fetchEvents,[]);
 
     const handleEditClick = () => {
         setIsEditing(!isEditing); // Toggle the editing state
@@ -17,7 +31,7 @@ const Profile = () => {
     const handleNameChange = (e) => setName(e.target.value);
     const handleBioChange = (e) => setBio(e.target.value);
       
-
+    var selectedEvents = events.filter((x) => x.members.includes(currentUser));
   return (
     <div className="container-fluid min-vh-100 bg-light-grey p-4 d-flex gap-3"> {/* Added gap-3 for spacing */}
       {/* Left Column */}
@@ -78,8 +92,10 @@ const Profile = () => {
           <div className="card-header text-center bg-dark-grey text-light-grey">Events Attending</div>
           <div className="card-body d-flex align-items-center justify-content-center"> {/* Center content */}
             <ul className="list-group w-100">
-              <li className="list-group-item bg-secondary text-light border-0">Music Fest</li>
-              <li className="list-group-item bg-secondary text-light border-0">Tech Conference</li>
+            { selectedEvents.length == 0 ? 
+              "Loading..." : 
+              selectedEvents.map((event) => (<li className="list-group-item bg-secondary text-light border-0">{event.name}</li>))
+          }
             </ul>
           </div>
         </div>
