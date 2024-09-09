@@ -1,0 +1,71 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.container {
+animation: fadeIn 1s ease-in-out;
+background-color: #6161c6; /* Dark background for the entire viewport */
+min-height: 100vh; /* Full viewport height */
+min-width: 100vw; /* Full viewport width */
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.card {
+background-color: #1f1f1f; /* Dark background for the card */
+border: none;
+border-radius: 12px;
+box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+transition: transform 0.3s ease;
+}
+
+
+h2 {
+color: #f1f1f1; /* Light color for the title */
+font-weight: bold;
+}
+
+.form-control {
+background-color: whitesmoke; /* White background for input fields */
+border: 1px solid #ccc;
+color: #333; /* Dark text color */
+transition: box-shadow 0.3s ease;
+resize: none;
+}
+
+.form-control:focus {
+box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+border-color: #007bff; /* Blue border on focus */
+outline: none;
+}
+
+.btn-primary {
+background-color: #ea5f5f; /* Blue button */
+border: none;
+color: #fff;
+font-weight: bold;
+transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-primary:hover {
+background-color: #0056b3; /* Darker blue on hover */
+transform: scale(1.05);
+}
+
+.text-danger {
+color: #ff4c4c; /* Red for error messages */
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+0% {
+    opacity: 0;
+}
+100% {
+    opacity: 1;
+}
+}

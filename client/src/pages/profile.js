@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/profile.css'; 
 import 'bootstrap/dist/css/bootstrap.min.css'; 
+<<<<<<< HEAD
 import { set } from 'mongoose';
 import axios from 'axios';
 
 
+=======
+import axios  from 'axios';
+>>>>>>> eb71392 (Added signup and profile pages)
 
 const Profile = ({currentUser}) => {
     const [name, setName] = useState('John Doe');
     const [bio, setBio] = useState('a passionate event planner')
     const [isEditing, setIsEditing] = useState(false);
+<<<<<<< HEAD
     const [events, setEvents] = useState([]);
 
     function fetchEvents() {
@@ -23,15 +28,38 @@ const Profile = ({currentUser}) => {
     }
 
     useEffect(fetchEvents,[]);
+=======
+    const [email] = useState('johndoe@gmail.com');
+
+    // calling the API to update the user profile when the user is editing
+    // this happends when isEditing is true
+    const updateUser = async () => {
+      try {
+        const response = await axios.put('http://localhost:5001/updateuser', { email, name, bio });
+        console.log(response.data)
+
+      } catch (error) {
+        console.error("Error in updating profile: ", error);
+      }
+    };
+>>>>>>> eb71392 (Added signup and profile pages)
 
     const handleEditClick = () => {
+      if (isEditing) {
+        updateUser();
+      }
         setIsEditing(!isEditing); // Toggle the editing state
       };
 
     const handleNameChange = (e) => setName(e.target.value);
     const handleBioChange = (e) => setBio(e.target.value);
+<<<<<<< HEAD
       
     var selectedEvents = events.filter((x) => x.members.includes(currentUser));
+=======
+
+      
+>>>>>>> eb71392 (Added signup and profile pages)
   return (
     <div className="container-fluid min-vh-100 bg-light-grey p-4 d-flex gap-3"> {/* Added gap-3 for spacing */}
       {/* Left Column */}

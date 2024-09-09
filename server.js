@@ -6,7 +6,7 @@ const app = express()
 const PORT = process.env.PORT || 5001;
 
 const Event = require("./models/event")
-
+const User = require("./models/user")
 
 app.use(cors());
 app.use(express.json());
@@ -17,12 +17,19 @@ app.listen(PORT, () => {
     console.log(`Server started running! (PORT: ${PORT})`)
 })
 
-const todoSchema = new mongoose.Schema({
-    task: String,
-    completed: Boolean,
-  });
+// creating API for updating user profile whenever user makes any edits to his/her profile
+app.put('/updateuser', async (req, res) => {
+    const {email, name, bio} = req.body;
+    const user = await User.findOneAndUpdate({email: email}, {name: name, bio: bio}, {new: true});
 
-const Todo = mongoose.model('Todo', todoSchema);
+    // handling case if user is not present
+    if (!user) {
+        return res.status(404).send("User not found!");
+    }
+    res.json({ message: "Profile successfully updated", user});
+});
+
+
 
 const { spawn } = require('child_process');
 
