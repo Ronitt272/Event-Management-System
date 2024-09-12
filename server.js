@@ -30,7 +30,7 @@ app.use(
     session({
       secret: 'secret',
       resave: false,
-      saveUninitialized: true,
+      saveUninitialized: false
     })
   );
 
@@ -141,6 +141,18 @@ app.get('/events', async (req, res) => {
     res.json(events);
 });
 
+
+
+// middleware to check if the user has been authenticated
+const isAuthenticated = (req, res, next) => {
+
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.status(401).json({ message: 'Unauthorized access. Kindly log in first.' });
+};
+
+
 //API to handle login requests 
 app.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
@@ -172,4 +184,20 @@ app.post('/login', (req, res, next) => {
       });
     })(req, res, next);
   });
-  
+
+app.get('/profile', isAuthenticated, async (req, res) => {
+  const user = User.findById(req.user.id);
+  if (!user) {
+    return res.status(404).json({message: "User not found"});
+  }
+  res.json({
+    success: true,
+    user: {
+        name: user.name,
+        email: user.email,
+        bio: user.bio,
+        events: user.events,
+        friends: user.friends
+    }
+    });
+});

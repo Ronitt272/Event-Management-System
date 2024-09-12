@@ -4,12 +4,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
 const Profile = ({ currentUser }) => {
-    const [name, setName] = useState(currentUser?.name || 'John Doe');
-    const [bio, setBio] = useState(currentUser?.bio || 'A passionate event planner');
+    const [name, setName] = useState(currentUser.name);
+    const [bio, setBio] = useState(currentUser.bio);
     const [isEditing, setIsEditing] = useState(false);
-    const [email] = useState(currentUser?.email || 'johndoe@gmail.com');
-    const [events, setEvents] = useState(currentUser?.events || []);
-    const [friends, setFriends] = useState(currentUser?.friends || []);
+    const [email] = useState(currentUser.email);
+    const [events, setEvents] = useState(currentUser.events);
+    const [friends, setFriends] = useState(currentUser.friends);
 
     // Fetch events attended by the user
     function fetchEvents() {
@@ -47,7 +47,7 @@ const Profile = ({ currentUser }) => {
     var selectedEvents = events.filter((x) => x.members.includes(currentUser));
 
     return (
-        <div className="container-fluid min-vh-100 bg-light-grey p-4 d-flex gap-3">
+        <div className="container-fluid min-vh-100 bg-dark p-4 d-flex gap-3">
             {/* Left Column */}
             <div className="col-md-2 d-flex flex-column flex-fill">
                 <div className="card bg-secondary text-center shadow-lg custom-shadow flex-grow-1 d-flex align-items-center justify-content-center"> 
@@ -88,26 +88,33 @@ const Profile = ({ currentUser }) => {
             <div className="col-md-7 d-flex flex-column justify-content-between">
                 {/* Friends Section */}
                 <div className="card mb-3 bg-secondary shadow-lg custom-shadow flex-grow-1">
-                    <div className="card-header text-center bg-dark-grey text-light-grey">Friends</div>
+                    <div className="card-header text-center bg-theme text-light-grey">Friends</div>
                     <div className="card-body d-flex align-items-center justify-content-center">
-                        <div className="row w-100">
-                            <div className="col-6 col-md-4 mb-3 text-center">
-                                <p className="text-light">Alice</p>
-                            </div>
-                            <div className="col-6 col-md-4 mb-3 text-center">
-                                <p className="text-light">Bob</p>
-                            </div>
-                        </div>
+                    <ul className="list-group w-100">
+                            {friends.length === 0 ? (
+                                <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
+                                    You have'nt added any friends yet!
+                                </div>
+                            ) : (
+                                friends.map((friend, index) => (
+                                    <li key={index} className="list-group-item bg-secondary text-light border-0">
+                                        {friend}
+                                    </li>
+                                ))
+                            )}
+                        </ul>
                     </div>
                 </div>
 
                 {/* Events Attended Section */}
                 <div className="card bg-secondary shadow-lg custom-shadow flex-grow-1">
-                    <div className="card-header text-center bg-dark-grey text-light-grey">Events Attending</div>
+                    <div className="card-header text-center bg-theme text-light-grey"> Events Attending </div>
                     <div className="card-body d-flex align-items-center justify-content-center">
                         <ul className="list-group w-100">
                             {selectedEvents.length === 0 ? 
-                                "Loading..." : 
+                                <div className="d-flex justify-content-center align-items-center" style={{ height: '100%', color: 'white'}}>
+                                You have'nt added any events yet!
+                                </div> : 
                                 selectedEvents.map((event) => (
                                     <li key={event._id} className="list-group-item bg-secondary text-light border-0">{event.name}</li>
                                 ))

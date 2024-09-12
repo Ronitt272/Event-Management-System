@@ -1,71 +1,72 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
+.signup-page {
+margin: 0;
+padding: 0;
+height: 100%;
+width: 100%;
+overflow: hidden;
 }
 
-.container {
-animation: fadeIn 1s ease-in-out;
-background-color: #6161c6; /* Dark background for the entire viewport */
-min-height: 100vh; /* Full viewport height */
-min-width: 100vw; /* Full viewport width */
+.signup-page .container {
+background-color: #6161c6;
+min-height: 100vh;
+min-width: 100vw;
 display: flex;
 justify-content: center;
 align-items: center;
 }
 
-.card {
-background-color: #1f1f1f; /* Dark background for the card */
+.signup-page .card {
+animation: fadeInUp 1s ease-in-out;
+background-color: #1f1f1f;
 border: none;
 border-radius: 12px;
 box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 transition: transform 0.3s ease;
 }
 
-
-h2 {
-color: #f1f1f1; /* Light color for the title */
+.signup-page h2 {
+color: #f1f1f1;
 font-weight: bold;
 }
 
-.form-control {
-background-color: whitesmoke; /* White background for input fields */
+.signup-page .form-control {
+background-color: whitesmoke;
 border: 1px solid #ccc;
-color: #333; /* Dark text color */
+color: #333;
 transition: box-shadow 0.3s ease;
 resize: none;
 }
 
-.form-control:focus {
+.signup-page .form-control:focus {
 box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
-border-color: #007bff; /* Blue border on focus */
+border-color: #007bff;
 outline: none;
 }
 
-.btn-primary {
-background-color: #ea5f5f; /* Blue button */
+.signup-page .btn-primary {
+background-color: #ea5f5f;
 border: none;
 color: #fff;
 font-weight: bold;
 transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.btn-primary:hover {
-background-color: #0056b3; /* Darker blue on hover */
+.signup-page .btn-primary:hover {
+background-color: #0056b3;
 transform: scale(1.05);
 }
 
-.text-danger {
-color: #ff4c4c; /* Red for error messages */
+.signup-page .text-danger {
+color: #ff4c4c;
 }
 
-/* Fade animation */
-@keyframes fadeIn {
+@keyframes fadeInUp {
 0% {
     opacity: 0;
+    transform: translateY(20px);
 }
 100% {
     opacity: 1;
+    transform: translateY(0);
 }
 }

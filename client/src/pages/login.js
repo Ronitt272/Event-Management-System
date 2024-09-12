@@ -45,6 +45,7 @@ const Login = ({ setUser }) => {
     };
 
     return (
+      <div className="login-page">
         <div className="container d-flex justify-content-center align-items-center vh-100">
             <div className="card p-4 shadow" style = {{width: '400px'}}>
                 <div>
@@ -70,7 +71,7 @@ const Login = ({ setUser }) => {
                             required
                         />
                 </div>
-                        <button type="submit" className="btn btn-primary w-100">Login</button>
+                        <button type="submit" className="btn btn-primary w-100">LOGIN</button>
                         <button type="button" className="btn btn-secondary w-100 mt-2" onClick={handleSignup}>
                         Create an Account
                         </button>
@@ -81,6 +82,7 @@ const Login = ({ setUser }) => {
             </div>
             
         </div>
+      </div>
     )
 
 };
