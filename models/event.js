@@ -6,7 +6,6 @@ const eventSchema = new mongoose.Schema({
     name: String,
     location: String,
     description: String,
-    isPrivate: Boolean,
     members: [String]
 })
 

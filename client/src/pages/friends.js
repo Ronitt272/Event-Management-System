@@ -7,16 +7,17 @@ import {Link} from "react-router-dom";
 
 
 
-const Events = ({currentUser, selectionFunction}) => {
-	const [events, setEvents] = useState([]);
-	const [selectedEvents, setSelectedEvents] = useState([]);
+const setFriends = ({currentUser}) => {
+	const [people, setFriends] = useState([]);
 
+	console.log("id",currentUser)
 	function fetchEvents() {
 		axios({
             url: "http://localhost:5001/events",
             method: "GET",
         })
             .then((res) => {
+            	console.log(res.data)
             	setEvents(res.data);
             })
 	}
@@ -39,30 +40,19 @@ const Events = ({currentUser, selectionFunction}) => {
 		axios.patch("http://localhost:5001/events",{_id : event._id, new_member : currentUser._id, members : event.members ? [...event.members, currentUser._id] : [currentUser._id]}).then((res) => {});
 		window.location.reload()
 	}
-    useEffect(() => {
-    	axios.post('http://localhost:5001/getusernames', { ids : selectedEvents.map(e => e.owner)}).then((res) => {
-    		var filteredEvents = events.filter(selectionFunction)
+	var selectedEvents = events.filter(selectionFunction)
 								.map(value => ({ value, sort: Math.random() }))
     							.sort((a, b) => a.sort - b.sort)
-    							.map(({ value }) => value);
-	        filteredEvents.map((e,i) => e.namedOwner = res.data.names[i]);
-	        setSelectedEvents(filteredEvents);
-	    });
-    }, [events])
-    
+    							.map(({ value }) => value).slice(0,9);
 
     return (
-    	<>
-    	<div style = {{display: "flex", justifyContent:"center", marginTop: "2vh"}}>
-    		<h1 class="text-white" style={{marginBottom:"3vh", fontWeight : "bold"}}>Dare to Discover</h1>
-    	</div>
-        <div class="container-fluid min-vh-100 bg-light-grey p-4 d-flex" >
-	        <div class = "events-grid container-fluid" style={{overflowY : "scroll", height: "90vh", paddingBottom : "5vh"}}>
+        <div class="container-fluid min-vh-100 bg-light-grey p-4 d-flex">
+	        <div class = "events-grid container-fluid">
 		        { selectedEvents.length == 0 ? 
 		        	<div class="text-white">No events, <Link to="/create-event">click here to create event</Link>.</div> : 
 		        	selectedEvents.map((event) => (<div class="event-grid-event p-4 d-flex-column gap-3" onClick={() => showModal(event)}>
 		        		<h1 class="card-title text-white">{event.name}</h1>
-		        		<h5 class="card-title text-white">by <b>{event.namedOwner}</b> at <b>{event.location}</b></h5>
+		        		<h5 class="card-title text-white">{event.location}</h5>
 		        		<h5 class="card-title text-light-gray"><i>{(new Date(event.time)).toUTCString()}</i></h5>
 		        		<p class="card-title text-white">{event.description}</p>
 
@@ -92,7 +82,6 @@ const Events = ({currentUser, selectionFunction}) => {
 			</div>
 
         </div>
-        </>
     )
 }
 

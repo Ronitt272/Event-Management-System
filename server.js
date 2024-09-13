@@ -107,6 +107,14 @@ app.post('/signup', async (req, res) => {
     }
   });
 
+app.post('/user', async (req, res) => {
+    const user = await User.findById(req.body.user._id);
+    if (!user) {
+      return res.status(404).json({message: "User not found"});
+    }
+    res.json(user);
+});
+
 // API for updating user profile whenever user makes any edits to their profile
 app.put('/updateuser', async (req, res) => {
     const { email, name, bio } = req.body;
@@ -121,10 +129,50 @@ app.put('/updateuser', async (req, res) => {
 
 // API to create a new event
 app.post('/events', async (req, res) => {
-    req.body["members"] = [];
+    req.body["members"] = [req.body.owner];
     const newEvent = new Event(req.body);
     await newEvent.save();
+
+    let user = await User.findById(req.body.owner);
+    var events = user.events;
+    events.push(newEvent._id)
+    user.set({'events' : events});
+    await user.save();
+
     res.json(newEvent);
+});
+
+app.post('/leaveevent', async (req, res) => {
+    let event = await Event.findById(req.body.event);
+    if (event.owner == req.body.user) {
+
+      for (var member of event.members) {
+        let user = await User.findById(member);
+        user.set({'events' : user.events.filter(event => event != req.body.event)});
+        await user.save();
+      }
+
+      await Event.findOneAndDelete({_id : req.body.event})
+
+    } else {
+      event.set({ 'members' : event.members.filter(user => user != req.body.user) });
+      await event.save();
+
+      let user = await User.findById(req.body.user);
+      user.set({'events' : user.events.filter(event => event != req.body.event)});
+      await user.save();
+    }
+
+    res.json({success : true});
+});
+app.post('/getusernames', async (req, res) => {
+    var names = [];
+    for (_id of req.body.ids) {
+      let user = await User.findById(_id);
+      names.push(user.name)
+    }
+
+    res.json({names : names});
 });
 
 // API to update members of an event
@@ -132,12 +180,18 @@ app.patch('/events', async (req, res) => {
     let event = await Event.findById(req.body._id);
     event.set({ 'members': req.body.members });
     await event.save();
+    let user = await User.findById(req.body.new_member);
+    if (user) {
+      user.set({'events' : user.events ? [...user.events, req.body._id] : [req.body._id]});
+      await user.save();
+    }
     res.json(event);
 });
 
 // API to get all events
 app.get('/events', async (req, res) => {
     const events = await Event.find();
+    
     res.json(events);
 });
 
@@ -145,7 +199,6 @@ app.get('/events', async (req, res) => {
 
 // middleware to check if the user has been authenticated
 const isAuthenticated = (req, res, next) => {
-
   if (req.isAuthenticated()) {
     return next();
   }
@@ -174,6 +227,7 @@ app.post('/login', (req, res, next) => {
           success: true,
           message: 'Login successful',
           user: {
+            _id : user._id,
             name: user.name,
             email: user.email,
             bio: user.bio,

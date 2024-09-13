@@ -3,13 +3,26 @@ import '../styles/profile.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
-const Profile = ({ currentUser }) => {
+const Profile = ({ currentUser, setCurrentUser }) => {
     const [name, setName] = useState(currentUser.name);
     const [bio, setBio] = useState(currentUser.bio);
     const [isEditing, setIsEditing] = useState(false);
     const [email] = useState(currentUser.email);
-    const [events, setEvents] = useState(currentUser.events);
-    const [friends, setFriends] = useState(currentUser.friends);
+    const [events, setEvents] = useState([]);
+    const [friends, setFriends] = useState([]);
+
+
+
+    React.useEffect(() => {
+        axios.post('http://localhost:5001/user', {user : currentUser}).then((res) => {
+            console.log(">>",res)
+            setCurrentUser(res.data);
+            axios.post('http://localhost:5001/getusernames', { ids : res.data.friends}).then((res) => {
+                setFriends(res.data.names);
+            });
+        });
+    }, []);
+
 
     // Fetch events attended by the user
     function fetchEvents() {
@@ -28,7 +41,6 @@ const Profile = ({ currentUser }) => {
     const updateUser = async () => {
         try {
             const response = await axios.put('http://localhost:5001/updateuser', { email, name, bio });
-            console.log(response.data);
         } catch (error) {
             console.error("Error in updating profile: ", error);
         }
@@ -41,17 +53,23 @@ const Profile = ({ currentUser }) => {
         setIsEditing(!isEditing); // Toggle the editing state
     };
 
+    const removeEvent = (eventId) => {
+        axios.post('http://localhost:5001/leaveevent', { event : eventId, user : currentUser._id}).then(() => window.location.reload());
+    }
+
     const handleNameChange = (e) => setName(e.target.value);
     const handleBioChange = (e) => setBio(e.target.value);
 
-    var selectedEvents = events.filter((x) => x.members.includes(currentUser));
+    console.log(events)
+    var selectedEvents = events.filter((x) => x.members.includes(currentUser._id));
+    
 
     return (
-        <div className="container-fluid min-vh-100 bg-dark p-4 d-flex gap-3">
+        <div className="profile-container container-fluid bg-dark p-4 d-flex gap-3">
             {/* Left Column */}
             <div className="col-md-2 d-flex flex-column flex-fill">
                 <div className="card bg-secondary text-center shadow-lg custom-shadow flex-grow-1 d-flex align-items-center justify-content-center"> 
-                    <div className="card-body d-flex flex-column align-items-center justify-content-center">
+                    <div className="card-body d-flex flex-column align-items-center justify-content-center" style={{width: "25vw"}}>
                         {isEditing ? (
                             <>
                                 <input
@@ -92,8 +110,8 @@ const Profile = ({ currentUser }) => {
                     <div className="card-body d-flex align-items-center justify-content-center">
                     <ul className="list-group w-100">
                             {friends.length === 0 ? (
-                                <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
-                                    You have'nt added any friends yet!
+                                <div className="d-flex justify-content-center align-items-center" style={{ height: '100%', color: 'white'}}>
+                                    You haven't added any friends yet!
                                 </div>
                             ) : (
                                 friends.map((friend, index) => (
@@ -113,10 +131,10 @@ const Profile = ({ currentUser }) => {
                         <ul className="list-group w-100">
                             {selectedEvents.length === 0 ? 
                                 <div className="d-flex justify-content-center align-items-center" style={{ height: '100%', color: 'white'}}>
-                                You have'nt added any events yet!
+                                You haven't added any events yet!
                                 </div> : 
                                 selectedEvents.map((event) => (
-                                    <li key={event._id} className="list-group-item bg-secondary text-light border-0">{event.name}</li>
+                                    <li key={event._id} className="list-group-item bg-secondary text-light border-0"><button onClick = {() => removeEvent(event._id)} className={"removeEventButton"+(event.owner==currentUser._id ? " delete" : "")}>&times;</button><b>{event.name}</b> <i style={{ color: 'gray'}}>{event.description}</i></li>
                                 ))
                             }
                         </ul>
