@@ -30,8 +30,11 @@ const NavBar = ({currentUser, setCurrentUser}) =>{
             </ul>
           </div>
           {currentUser ? 
-            <button onClick = {logOut} class="text-white" style={{textDecoration:"none", border: "none", background:"none"}}>Log Out</button> : 
-            ""
+            <button onClick = {logOut} class="text-white nav-links">Log Out</button> : 
+            <>
+              <Link class="text-white nav-links" to="/login">Login</Link>
+              <Link class="text-white nav-links" to="/signup">Sign Up</Link>
+            </>
           }
           
         </nav>
