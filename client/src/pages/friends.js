@@ -6,83 +6,76 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import {Link} from "react-router-dom";
 
 
+const Friends = ({currentUser, setCurrentUser}) => {
+	const [users, setUsers] = useState([]);
 
-const setFriends = ({currentUser}) => {
-	const [people, setFriends] = useState([]);
-
-	console.log("id",currentUser)
-	function fetchEvents() {
+	function fetchUsers() {
 		axios({
-            url: "http://localhost:5001/events",
+            url: "http://localhost:5001/users",
             method: "GET",
         })
             .then((res) => {
-            	console.log(res.data)
-            	setEvents(res.data);
-            })
+            	setUsers(res.data);
+            });
 	}
 
-	useEffect(fetchEvents,[]);
+	useEffect(() => {
+        axios.post('http://localhost:5001/user', {user : currentUser}).then((res) => {
+            setCurrentUser(res.data);
+        });
+    }, []);
 
-	function showModal(event) {
-		document.getElementById("eventModalName").innerHTML = event.name
-		document.getElementById("eventModalDescription").innerHTML = event.description
-		document.getElementById("eventModalInfo").innerHTML = '<h5 class="card-title text-white">'+event.location+'</h5><h5 class="card-title text-light-gray"><i>'+((new Date(event.time)).toUTCString())+'</i></h5>'
-		document.getElementById("eventModal").classList.add("show")
-		document.getElementById("joinbutton").onclick = () => joinEvent(event)
-	}
-	function hideModal() {
-		document.getElementById("eventModal").classList.remove("show")
-	}
+	useEffect(fetchUsers,[]);
 
-	function joinEvent(event) {
-		hideModal()
-		axios.patch("http://localhost:5001/events",{_id : event._id, new_member : currentUser._id, members : event.members ? [...event.members, currentUser._id] : [currentUser._id]}).then((res) => {});
-		window.location.reload()
-	}
-	var selectedEvents = events.filter(selectionFunction)
+	var selectedUsers = users.filter(user => user._id != currentUser._id)
 								.map(value => ({ value, sort: Math.random() }))
     							.sort((a, b) => a.sort - b.sort)
-    							.map(({ value }) => value).slice(0,9);
+    							.map(({ value }) => value);
+
+
+    function addFriend(event, new_friend) {
+    	if (event.target.classList.contains("add")) {
+    		event.target.classList.remove("add")
+    		event.target.innerHTML = "Remove Friend";
+    	} else {
+    		event.target.classList.add("add")
+    		event.target.innerHTML = "Add Friend";
+    	}
+    	axios.post('http://localhost:5001/friend', { user : currentUser._id, new_friend : new_friend}).then((res) => {
+	    });
+    	
+    }
+
 
     return (
-        <div class="container-fluid min-vh-100 bg-light-grey p-4 d-flex">
-	        <div class = "events-grid container-fluid">
-		        { selectedEvents.length == 0 ? 
-		        	<div class="text-white">No events, <Link to="/create-event">click here to create event</Link>.</div> : 
-		        	selectedEvents.map((event) => (<div class="event-grid-event p-4 d-flex-column gap-3" onClick={() => showModal(event)}>
-		        		<h1 class="card-title text-white">{event.name}</h1>
-		        		<h5 class="card-title text-white">{event.location}</h5>
-		        		<h5 class="card-title text-light-gray"><i>{(new Date(event.time)).toUTCString()}</i></h5>
-		        		<p class="card-title text-white">{event.description}</p>
-
-		        	</div>))
-		    	}
-		    </div>
-			<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-hidden="true" style={{display:"block"}}>
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header" style={{position:"relative"}}>
-			        <h5 class="modal-title text-white" id="eventModalName">Modal title</h5>
-			        <button style={{border:"none", position:"absolute",right:"10px", background: "none"}} type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={hideModal}>
-			          <span aria-hidden="true" style={{color:"white", fontSize:"1.3rem"}}>&times;</span>
-			        </button>
-			      </div>
-			      <div class="modal-body" id="eventModalInfo">
-			      </div>
-			      <div class="modal-body text-white" id="eventModalDescription">
-			        ...
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal" onClick={hideModal}>Close</button>
-			        <button type="button" id="joinbutton" class="btn btn-primary">Join</button>
-			      </div>
-			    </div>
-			  </div>
+    	<>
+    		<div style = {{display: "flex", justifyContent:"center", marginTop: "2vh"}}>
+				<h1 class="text-white" style={{marginBottom:"3vh", fontWeight : "bold"}}>Find Some Friends</h1>
 			</div>
-
-        </div>
+	    	<div style={{overflowY : "scroll", height: "80vh"}}>
+		        <div class="container-fluid min-vh-100 bg-light-grey p-4 d-flex" >
+		        	<ul className="list-group w-100 d-flex" >
+		                {selectedUsers.length === 0 ? 
+		                    <div className="d-flex justify-content-center align-items-center" style={{ height: '100%', color: 'white'}}>
+		                    No other users.
+		                    </div> : 
+		                    selectedUsers.map((user) => (
+		                        <li key={user._id} className="list-group-item bg-secondary text-light border-0" style={{width: "100%"}}>
+		                        <b>{user.name}</b> 
+		                        <i style={{ color: 'gray'}}>{user.bio}</i>
+		                        	{ currentUser.friends.includes(user._id) ? 
+		                        		<button class="toggleFriend" onClick = {(event) => addFriend(event, user._id)}>Remove Friend</button>
+		                        		:
+		                        		<button class="toggleFriend add" onClick = {(event) => addFriend(event, user._id)}>Add Friend</button>
+		                        	}
+		                        </li>
+		                    ))
+		                }
+		            </ul>
+		        </div>
+	        </div>
+        </>
     )
 }
 
-export default Events;
+export default Friends;

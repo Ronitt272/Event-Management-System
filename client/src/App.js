@@ -7,6 +7,7 @@ import CreateEvent from "./pages/create_event";
 import Profile from "./pages/profile";
 import Signup from "./pages/signup";
 import Login from './pages/login';
+import Friends from './pages/friends';
 
 const App = () => {
   // useState returns a list
@@ -42,6 +43,7 @@ const App = () => {
           <Route path="/events" element={isAuthenticated() ? <Events currentUser={currentUser} selectionFunction={(event) => !event.members.includes(currentUser._id)} /> : <Navigate to = "/login"/>} />
           <Route path="/create-event" element={isAuthenticated() ? <CreateEvent currentUser={currentUser} /> : <Navigate to = "/login"/> } />
           <Route path="/profile" element={isAuthenticated() ? <Profile currentUser={currentUser} setCurrentUser = {setCurrentUser}/> : <Navigate to = "/login"/> }/>
+          <Route path="/friends" element={isAuthenticated() ? <Friends currentUser={currentUser} setCurrentUser = {setCurrentUser} /> : <Navigate to = "/login"/>} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login setUser={setCurrentUser}/>} />
         </Routes>

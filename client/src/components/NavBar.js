@@ -12,13 +12,14 @@ const NavBar = ({currentUser, setCurrentUser}) =>{
     }
     return (    
         <nav class="navbar navbar-expand-lg">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
+
+          <div class=" navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class={"nav-item"+(location.pathname=="/profile" ? " active":"")}>
                 <Link to="/profile">Profile</Link>
+              </li>
+              <li class={"nav-item"+(location.pathname=="/friends" ? " active":"")}>
+                <Link to="/friends">Friends</Link>
               </li>
               <li class={"nav-item"+(location.pathname=="/events" ? " active":"")}>
                 <Link to="/events">Events</Link>
