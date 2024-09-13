@@ -39,13 +39,14 @@ const App = () => {
       <NavBar currentUser = {currentUser} setCurrentUser = {setCurrentUser}/>
       <div>
         <Routes>
-          <Route exact path="/" element={<Navigate to = "/profile"/>} />
+          <Route exact path="/" element={<Navigate to = "/home"/>} />
           <Route path="/events" element={isAuthenticated() ? <Events currentUser={currentUser} selectionFunction={(event) => !event.members.includes(currentUser._id)} /> : <Navigate to = "/login"/>} />
           <Route path="/create-event" element={isAuthenticated() ? <CreateEvent currentUser={currentUser} /> : <Navigate to = "/login"/> } />
           <Route path="/profile" element={isAuthenticated() ? <Profile currentUser={currentUser} setCurrentUser = {setCurrentUser}/> : <Navigate to = "/login"/> }/>
           <Route path="/friends" element={isAuthenticated() ? <Friends currentUser={currentUser} setCurrentUser = {setCurrentUser} /> : <Navigate to = "/login"/>} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login setUser={setCurrentUser}/>} />
+          <Route path="/home" element={<Home />}/>
         </Routes>
       </div>
     </div>
