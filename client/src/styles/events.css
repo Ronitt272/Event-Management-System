@@ -61,4 +61,15 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-
+.toggleFriend {
+	border: none;
+	color: white;
+	background: #941f34;
+	margin-left: 2vw;
+	border-radius: 3px;
+	padding: 3px 12px;
+	float:right;
+}
+.toggleFriend.add {
+	background: #357842;
+}

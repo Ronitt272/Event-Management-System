@@ -139,18 +139,21 @@ app.post('/events', async (req, res) => {
     res.json(newEvent);
 });
 
+async function deleteEvent(eventId) {
+  let event = await Event.findById(eventId);
+  for (var member of event.members) {
+    let user = await User.findById(member);
+    user.set({'events' : user.events.filter(event => event != eventId)});
+    await user.save();
+  }
+
+  await Event.findOneAndDelete({_id : eventId})
+}
+
 app.post('/leaveevent', async (req, res) => {
     let event = await Event.findById(req.body.event);
     if (event.owner == req.body.user) {
-
-      for (var member of event.members) {
-        let user = await User.findById(member);
-        user.set({'events' : user.events.filter(event => event != req.body.event)});
-        await user.save();
-      }
-
-      await Event.findOneAndDelete({_id : req.body.event})
-
+      deleteEvent(event._id)
     } else {
       event.set({ 'members' : event.members.filter(user => user != req.body.user) });
       await event.save();
@@ -166,10 +169,22 @@ app.post('/getusernames', async (req, res) => {
     var names = [];
     for (_id of req.body.ids) {
       let user = await User.findById(_id);
-      names.push(user.name)
+      if (user)
+        names.push(user.name)
     }
 
     res.json({names : names});
+});
+app.post('/friend', async (req, res) => {
+    let user = await User.findById(req.body.user);
+    if (user.friends.includes(req.body.new_friend)) {
+      user.set({'friends' : user.friends.filter(user => user != req.body.new_friend)});
+    } else {
+      user.set({'friends' : user.friends ? [...user.friends, req.body.new_friend] : [req.body.new_friend]});
+    }
+    await user.save();
+
+    res.json(user);
 });
 
 // API to update members of an event
@@ -185,12 +200,26 @@ app.patch('/events', async (req, res) => {
     res.json(event);
 });
 
-// API to get all events
+// endpoint to get all events
 app.get('/events', async (req, res) => {
     const events = await Event.find();
-    
+    var currTime = (new Date()).getTime();
+    for (event of events) {
+      // check for old events
+      if (currTime > event.time.getTime()) {
+        deleteEvent(event._id)
+      }
+    }
     res.json(events);
 });
+
+// endpoint to get all events
+app.get('/users', async (req, res) => {
+    const users = await User.find();
+
+    res.json(users);
+});
+
 
 
 

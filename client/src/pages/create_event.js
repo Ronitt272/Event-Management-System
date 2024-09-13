@@ -32,8 +32,8 @@ const Events = ({currentUser}) => {
 
 
     return (
-        <div class="container-fluid min-vh-100 p-4 d-flex justify-content-center">
-            <div class="p-4 d-flex-reverse" style={{backgroundColor : "rgb(38, 39, 59)", width: "40vw"}}>
+        <div class="container-fluid min-vh-100 p-4 d-flex justify-content-center" style={{overflow: "scroll", height: "90vh"}}>
+            <div class="p-4 d-flex-reverse" style={{backgroundColor : "rgb(38, 39, 59)", width: "40vw", height: "80vh"}}>
               <h1 class="text-white" style={{marginBottom:"3vh", fontWeight : "bold"}}>What do you want to do?</h1>
               <div class="form-group mb-3">
                 <label class="text-white" for="eventInputName">Event Name</label>

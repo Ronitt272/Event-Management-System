@@ -56,6 +56,9 @@ const Profile = ({ currentUser, setCurrentUser }) => {
     const removeEvent = (eventId) => {
         axios.post('http://localhost:5001/leaveevent', { event : eventId, user : currentUser._id}).then(() => window.location.reload());
     }
+    const removeFriend = (friendId) => {
+        axios.post('http://localhost:5001/friend', { new_friend : friendId, user : currentUser._id}).then(() => window.location.reload());
+    }
 
     const handleNameChange = (e) => setName(e.target.value);
     const handleBioChange = (e) => setBio(e.target.value);
@@ -116,6 +119,7 @@ const Profile = ({ currentUser, setCurrentUser }) => {
                             ) : (
                                 friends.map((friend, index) => (
                                     <li key={index} className="list-group-item bg-secondary text-light border-0">
+                                        <button onClick = {() => removeFriend(currentUser.friends[index])} className={"removeEventButton"}>&times;</button>
                                         {friend}
                                     </li>
                                 ))
@@ -134,7 +138,11 @@ const Profile = ({ currentUser, setCurrentUser }) => {
                                 You haven't added any events yet!
                                 </div> : 
                                 selectedEvents.map((event) => (
-                                    <li key={event._id} className="list-group-item bg-secondary text-light border-0"><button onClick = {() => removeEvent(event._id)} className={"removeEventButton"+(event.owner==currentUser._id ? " delete" : "")}>&times;</button><b>{event.name}</b> <i style={{ color: 'gray'}}>{event.description}</i></li>
+                                    <li key={event._id} className="list-group-item bg-secondary text-light border-0">
+                                        <button onClick = {() => removeEvent(event._id)} className={"removeEventButton"+(event.owner==currentUser._id ? " delete" : "")}>&times;</button>
+                                        <b>{event.name}</b>
+                                        <i style={{ color: 'gray'}}>{event.description}</i>
+                                    </li>
                                 ))
                             }
                         </ul>
