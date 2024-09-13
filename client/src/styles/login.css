@@ -80,6 +80,7 @@ transform: scale(1.05);
 
 .login-page .text-danger {
 color: #ff4c4c;
+font-weight: bolder;
 }
 
 @keyframes fadeInUp {

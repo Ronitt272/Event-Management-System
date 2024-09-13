@@ -12,10 +12,7 @@ const PORT = process.env.PORT || 5001;
 const Event = require("./models/event");
 const User = require("./models/user");
 
-mongoose.connect('mongodb://127.0.0.1:27017/playground', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+mongoose.connect('mongodb://127.0.0.1:27017/playground');
 
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -100,7 +97,7 @@ app.post('/signup', async (req, res) => {
       });
   
       await user.save();
-      res.status(201).json({ message: 'User registered successfully' });
+      res.status(201).json({ message: 'User registered successfully!' });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Server error' });

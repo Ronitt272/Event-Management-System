@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/signup.css';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
+import { useNavigate } from 'react-router-dom';
+
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -9,6 +11,7 @@ const Signup = () => {
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate()
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -26,6 +29,10 @@ const Signup = () => {
       console.error('Error during signup:', error);
       setMessage('Error during signup. Please try again.');
     }
+  };
+
+  const handleLoginRedirect = () => {
+    navigate('/login'); 
   };
 
   return (
@@ -73,9 +80,20 @@ const Signup = () => {
               rows={3}
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">Sign Up</button>
+          <button type="submit" className="btn btn-primary w-100" id="btn-orange">Sign Up</button>
         </form>
         {message && <p className="text-center mt-3 text-danger">{message}</p>}
+        <p className="text-center mt-3 text-light text-login">
+            Already have an account? 
+            <button 
+              type="button" 
+              className="btn btn-secondary ms-2" 
+              id = "btn-grey"
+              onClick={handleLoginRedirect}
+            >
+              Log in
+            </button>
+          </p>
       </div>
     </div>
   </div>
