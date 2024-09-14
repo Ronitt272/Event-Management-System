@@ -12,12 +12,14 @@ const PORT = process.env.PORT || 5001;
 const Event = require("./models/event");
 const User = require("./models/user");
 
-mongoose.connect('mongodb://127.0.0.1:27017/playground');
+const functions = require("firebase-functions");
+
+mongoose.connect('mongodb+srv://jonahstockwell:okpH8rOYk1Oo4Uio@cluster0.sijq5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
 
 app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true
-  }));
+  origin: 'https://event-management-system-16761.web.app',
+  credentials: true
+}));
   
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
@@ -281,3 +283,5 @@ app.get('/profile', isAuthenticated, async (req, res) => {
     }
     });
 });
+
+export const api = functions.https.onRequest(app);
