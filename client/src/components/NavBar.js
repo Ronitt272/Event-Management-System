@@ -15,16 +15,16 @@ const NavBar = ({currentUser, setCurrentUser}) =>{
 
           <div class=" navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-              <li class={"nav-item"+(location.pathname=="/profile" ? " active":"")}>
+              <li class={"nav-item"+(location.pathname==="/profile" ? " active":"")}>
                 <Link to="/profile">Profile</Link>
               </li>
-              <li class={"nav-item"+(location.pathname=="/friends" ? " active":"")}>
+              <li class={"nav-item"+(location.pathname==="/friends" ? " active":"")}>
                 <Link to="/friends">Friends</Link>
               </li>
-              <li class={"nav-item"+(location.pathname=="/events" ? " active":"")}>
+              <li class={"nav-item"+(location.pathname==="/events" ? " active":"")}>
                 <Link to="/events">Events</Link>
               </li>
-              <li class={"nav-item"+(location.pathname=="/create-event" ? " active":"")}>
+              <li class={"nav-item"+(location.pathname==="/create-event" ? " active":"")}>
                 <Link to="/create-event">Create Event</Link>
               </li>
             </ul>

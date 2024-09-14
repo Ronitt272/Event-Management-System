@@ -141,7 +141,6 @@ const Profile = ({ currentUser, setCurrentUser }) => {
                                     <li key={event._id} className="list-group-item bg-secondary text-light border-0">
                                         <button onClick = {() => removeEvent(event._id)} className={"removeEventButton"+(event.owner==currentUser._id ? " delete" : "")}>&times;</button>
                                         <b>{event.name}</b>
-                                        <i style={{ color: 'gray'}}>{event.description}</i>
                                     </li>
                                 ))
                             }

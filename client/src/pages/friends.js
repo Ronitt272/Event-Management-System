@@ -3,8 +3,6 @@ import axios from "axios";
 import '../styles/events.css'; 
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import 'bootstrap/dist/js/bootstrap.min.js'; 
-import {Link} from "react-router-dom";
-
 
 const Friends = ({currentUser, setCurrentUser}) => {
 	const [users, setUsers] = useState([]);
@@ -27,7 +25,7 @@ const Friends = ({currentUser, setCurrentUser}) => {
 
 	useEffect(fetchUsers,[]);
 
-	var selectedUsers = users.filter(user => user._id != currentUser._id)
+	var selectedUsers = users.filter(user => user._id !== currentUser._id)
 								.map(value => ({ value, sort: Math.random() }))
     							.sort((a, b) => a.sort - b.sort)
     							.map(({ value }) => value);
@@ -50,29 +48,42 @@ const Friends = ({currentUser, setCurrentUser}) => {
     return (
     	<>
     		<div style = {{display: "flex", justifyContent:"center", marginTop: "2vh"}}>
-				<h1 class="text-white" style={{marginBottom:"3vh", fontWeight : "bold"}}>Your Event Mates</h1>
+				<h1 class="text-white" style={{marginBottom:"3vh", fontWeight : "bold"}}>Party Companions!</h1>
 			</div>
 	    	<div style={{overflowY : "scroll", height: "80vh"}}>
 		        <div class="container-fluid min-vh-100 bg-light-grey p-4 d-flex" >
-		        	<ul className="list-group w-100 d-flex" >
-		                {selectedUsers.length === 0 ? 
-		                    <div className="d-flex justify-content-center align-items-center" style={{ height: '100%', color: 'white'}}>
-		                    No other users.
-		                    </div> : 
-		                    selectedUsers.map((user) => (
-		                        <li key={user._id} className="list-group-item bg-secondary text-light border-0" style={{width: "100%"}}>
-		                        <b>{user.name}</b> 
-		                        <i style={{ color: 'gray'}}>{user.bio}</i>
-		                        	{ currentUser.friends.includes(user._id) ? 
-		                        		<button class="toggleFriend" onClick = {(event) => addFriend(event, user._id)}>Remove Friend</button>
-		                        		:
-		                        		<button class="toggleFriend add" onClick = {(event) => addFriend(event, user._id)}>Add Friend</button>
-		                        	}
-		                        </li>
-		                    ))
-		                }
-		            </ul>
-		        </div>
+				<ul className="list-group w-100">
+  {selectedUsers.length === 0 ? (
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ height: '100%', color: 'white' }}
+    >
+      No other users.
+    </div>
+			) : (
+				selectedUsers.map((user) => (
+				<li
+					key={user._id}
+					className="list-group-item bg-secondary text-light border-0 d-flex align-items-center justify-content-between"
+					style={{ width: '100%' }}
+				>
+					<div>
+					<b>{user.name}</b>
+					<div style={{ color: '#a0a0a0' }}>{user.bio}</div>
+					</div>
+					<button
+					className={`toggleFriend ${currentUser.friends.includes(user._id) ? '' : 'add'}`}
+					onClick={(event) => addFriend(event, user._id)}
+					style={{ marginLeft: 'auto' }} // Optional styling for spacing
+					>
+					{currentUser.friends.includes(user._id) ? 'Remove Friend' : 'Add Friend'}
+					</button>
+				</li>
+				))
+			)}
+			</ul>
+
+							</div>
 	        </div>
         </>
     )
