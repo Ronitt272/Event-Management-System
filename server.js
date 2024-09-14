@@ -12,8 +12,6 @@ const PORT = process.env.PORT || 5001;
 const Event = require("./models/event");
 const User = require("./models/user");
 
-const functions = require("firebase-functions");
-
 mongoose.connect('mongodb+srv://jonahstockwell:okpH8rOYk1Oo4Uio@cluster0.sijq5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
 
 app.use(cors({
@@ -283,5 +281,3 @@ app.get('/profile', isAuthenticated, async (req, res) => {
     }
     });
 });
-
-export const api = functions.https.onRequest(app);
