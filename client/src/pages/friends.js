@@ -50,7 +50,7 @@ const Friends = ({currentUser, setCurrentUser}) => {
     return (
     	<>
     		<div style = {{display: "flex", justifyContent:"center", marginTop: "2vh"}}>
-				<h1 class="text-white" style={{marginBottom:"3vh", fontWeight : "bold"}}>Find Some Friends</h1>
+				<h1 class="text-white" style={{marginBottom:"3vh", fontWeight : "bold"}}>Your Event Mates</h1>
 			</div>
 	    	<div style={{overflowY : "scroll", height: "80vh"}}>
 		        <div class="container-fluid min-vh-100 bg-light-grey p-4 d-flex" >
