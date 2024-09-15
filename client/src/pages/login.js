@@ -14,7 +14,7 @@ const Login = ({ setUser, setUserID }) => {
     e.preventDefault();
   
     try {
-      const response = await axios.post('http://localhost:5001/login', { email, password });
+      const response = await axios.post('https://event-management-system-pdyq.onrender.com/login', { email, password });
   
       console.log('Response from server:', response); // Debugging log
   

@@ -9,7 +9,7 @@ const Friends = ({currentUser, setCurrentUser}) => {
 
 	function fetchUsers() {
 		axios({
-            url: "http://localhost:5001/users",
+            url: "https://event-management-system-pdyq.onrender.com/users",
             method: "GET",
         })
             .then((res) => {
@@ -18,7 +18,7 @@ const Friends = ({currentUser, setCurrentUser}) => {
 	}
 
 	useEffect(() => {
-        axios.post('http://localhost:5001/user', {user : currentUser}).then((res) => {
+        axios.post('https://event-management-system-pdyq.onrender.com/user', {user : currentUser}).then((res) => {
             setCurrentUser(res.data);
         });
     }, []);
@@ -39,7 +39,7 @@ const Friends = ({currentUser, setCurrentUser}) => {
     		event.target.classList.add("add")
     		event.target.innerHTML = "Add Friend";
     	}
-    	axios.post('http://localhost:5001/friend', { user : currentUser._id, new_friend : new_friend}).then((res) => {
+    	axios.post('https://event-management-system-pdyq.onrender.com/friend', { user : currentUser._id, new_friend : new_friend}).then((res) => {
 	    });
     	
     }

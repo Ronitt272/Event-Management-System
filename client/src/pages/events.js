@@ -13,7 +13,7 @@ const Events = ({currentUser, selectionFunction}) => {
 
 	function fetchEvents() {
 		axios({
-            url: "http://localhost:5001/events",
+            url: "https://event-management-system-pdyq.onrender.com/events",
             method: "GET",
         })
             .then((res) => {
@@ -36,11 +36,11 @@ const Events = ({currentUser, selectionFunction}) => {
 
 	function joinEvent(event) {
 		hideModal()
-		axios.patch("http://localhost:5001/events",{_id : event._id, new_member : currentUser._id, members : event.members ? [...event.members, currentUser._id] : [currentUser._id]}).then((res) => {});
+		axios.patch("https://event-management-system-pdyq.onrender.com/events",{_id : event._id, new_member : currentUser._id, members : event.members ? [...event.members, currentUser._id] : [currentUser._id]}).then((res) => {});
 		window.location.reload()
 	}
     useEffect(() => {
-    	axios.post('http://localhost:5001/getusernames', { ids : selectedEvents.map(e => e.owner)}).then((res) => {
+    	axios.post('https://event-management-system-pdyq.onrender.com/getusernames', { ids : selectedEvents.map(e => e.owner)}).then((res) => {
     		var filteredEvents = events.filter(selectionFunction)
 								.map(value => ({ value, sort: Math.random() }))
     							.sort((a, b) => a.sort - b.sort)

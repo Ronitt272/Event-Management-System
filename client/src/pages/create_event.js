@@ -24,7 +24,7 @@ const Events = ({currentUser}) => {
             location : document.getElementById("eventInputLocation").value,
             description : document.getElementById("eventInputDesc").value
       }
-		axios.post("http://localhost:5001/events",data).then((res) => {
+		axios.post("https://event-management-system-pdyq.onrender.com/events",data).then((res) => {
             	console.log(res.data)
             })
         window.location.href = "/profile";

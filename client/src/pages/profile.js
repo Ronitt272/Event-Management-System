@@ -14,10 +14,10 @@ const Profile = ({ currentUser, setCurrentUser }) => {
 
 
     React.useEffect(() => {
-        axios.post('http://localhost:5001/user', {user : currentUser}).then((res) => {
+        axios.post('https://event-management-system-pdyq.onrender.com/user', {user : currentUser}).then((res) => {
             console.log(">>",res)
             setCurrentUser(res.data);
-            axios.post('http://localhost:5001/getusernames', { ids : res.data.friends}).then((res) => {
+            axios.post('https://event-management-system-pdyq.onrender.com/getusernames', { ids : res.data.friends}).then((res) => {
                 setFriends(res.data.names);
             });
         });
@@ -27,7 +27,7 @@ const Profile = ({ currentUser, setCurrentUser }) => {
     // Fetch events attended by the user
     function fetchEvents() {
         axios({
-            url: "http://localhost:5001/events",
+            url: "https://event-management-system-pdyq.onrender.com/events",
             method: "GET",
         })
             .then((res) => {
@@ -40,7 +40,7 @@ const Profile = ({ currentUser, setCurrentUser }) => {
     // Update user profile when editing
     const updateUser = async () => {
         try {
-            const response = await axios.put('http://localhost:5001/updateuser', { email, name, bio });
+            const response = await axios.put('https://event-management-system-pdyq.onrender.com/updateuser', { email, name, bio });
         } catch (error) {
             console.error("Error in updating profile: ", error);
         }
@@ -54,10 +54,10 @@ const Profile = ({ currentUser, setCurrentUser }) => {
     };
 
     const removeEvent = (eventId) => {
-        axios.post('http://localhost:5001/leaveevent', { event : eventId, user : currentUser._id}).then(() => window.location.reload());
+        axios.post('https://event-management-system-pdyq.onrender.com/leaveevent', { event : eventId, user : currentUser._id}).then(() => window.location.reload());
     }
     const removeFriend = (friendId) => {
-        axios.post('http://localhost:5001/friend', { new_friend : friendId, user : currentUser._id}).then(() => window.location.reload());
+        axios.post('https://event-management-system-pdyq.onrender.com/friend', { new_friend : friendId, user : currentUser._id}).then(() => window.location.reload());
     }
 
     const handleNameChange = (e) => setName(e.target.value);

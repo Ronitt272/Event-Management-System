@@ -17,7 +17,7 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5001/signup', {
+      const response = await axios.post('https://event-management-system-pdyq.onrender.com/signup', {
         email,
         password,
         name,
