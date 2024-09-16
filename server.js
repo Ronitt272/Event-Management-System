@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5001;
 const Event = require("./models/event");
 const User = require("./models/user");
 
-mongoose.connect('mongodb+srv://jonahstockwell:okpH8rOYk1Oo4Uio@cluster0.sijq5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+mongoose.connect(`mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@cluster0.sijq5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`);
 
 app.use(cors({
   origin: 'https://event-management-system-16761.web.app',

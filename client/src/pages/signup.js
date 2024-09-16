@@ -37,7 +37,7 @@ const Signup = () => {
 
   return (
     <div className="signup-page">
-    <div className="container d-flex justify-content-center align-items-center vh-100">
+    <div className="container d-flex justify-content-center align-items-center" style={{height:"90vh", overflowY: "scroll", minHeight :"auto"}}>
       <div className="card p-4 shadow" style={{ width: '400px' }}>
         <h2 className="text-center mb-4">Create Your Account</h2>
         <form onSubmit={handleSignup}>
